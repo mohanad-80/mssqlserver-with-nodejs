@@ -16,7 +16,7 @@ async function connectDB() {
     const pool = await sql.connect(config);
     console.log("connected successfully to the DB");
     // const result = await pool.request().query('SELECT * FROM TestTable')
-    // console.log(result);
+    // console.log(result["recordset"]);
     return pool;
   } catch (error) {
     console.error("Database connection error:", error);
