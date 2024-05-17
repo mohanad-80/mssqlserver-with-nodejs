@@ -70,3 +70,40 @@ app.post("/api/testtable", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+app.get("/airplane", async (req, res) => {
+  try {
+    const result = await sql.query`SELECT * FROM AIRPLANE`;
+    res.json(result.recordset);
+  } catch (error) {
+    console.error("Error fetching records:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.post("/airplane", async (req, res) => {
+  const { serial, model, capacity } = req.body;
+  try {
+    await sql.query`INSERT INTO AIRPLANE (Serial, Model, Capacity)
+    VALUES(${serial}, ${model}, ${capacity});`;
+    res.status(201).json({ message: "Record inserted successfully" });
+  } catch (error) {
+    console.error("Error inserting record:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+/*
+
+1. `POST /api/users/signup`: Signing up a new user
+2. `PUT /api/users/:userId`: Updating a user's details
+3. `POST /api/aircrafts`: Adding an aircraft (by admin)
+4. `PUT /api/aircrafts/:aircraftId`: Updating an aircraft's details (by admin)
+5. `POST /api/flights`: Adding a flight (by admin)
+6. `PUT /api/flights/:flightId`: Updating a flight's details (by admin)
+7. `GET /api/flights`: Showing a list of available flights
+8. `POST /api/flights/:flightId/book`: Performing operations on flights: booking
+9. `DELETE /api/flights/:flightId/bookings/:bookingId`: Performing operations on flights: cancelling
+10. `PUT /api/flights/:flightId/bookings/:bookingId`: Performing operations on flights: changing flight class
+
+*/
